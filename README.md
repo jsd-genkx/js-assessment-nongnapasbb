@@ -131,11 +131,6 @@
 
 ### Thinking Process
 
-1. // step 1
-2. // step 2
-3. // ...
-4. // step n
-
 _Notes:_<br>
 _- You can attach flowcharts, diagrams, and images as needed._<br>
 _- The purpose of this section is not to explain your code but rather to convey your thoughts and ideas._

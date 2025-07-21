@@ -5,39 +5,51 @@ import clear from "clear-screen";
 
 const prompt = promptSync({ sigint: true });
 
-
 const hat = "^";
 const hole = "O";
 const fieldCharacter = "░";
 const pathCharacter = "*";
 
 class Field {
-	constructor(field = [[]]) {
-		this.field = field;
-
-		// Replace with your own code //
-		// Set the home position at (0, 0) before the game starts
-		this.positionRow = 0;
-		this.positionCol = 0;
-		this.field[this.positionRow][this.positionCol] = pathCharacter;
-	}
-
-	// Print field //
-	print() {
-		clear();
-
-		// Replace with your own code //
-		console.log(this.field); // Please REMOVE this line before you start your code!
-	}
-
-	// Your Code //
+  constructor(board = [[]]) {
+    this.newBoard = board;
+    console.log(board);
+  }
+  print() {
+    clear();
+    console.log("Print the board",this.newBoard);
+  }
 }
 
-// Game Mode ON
-// Remark: Code example below should be deleted and use your own code.
-const newGame = new Field([
-	["░", "░", "O"],
-	["░", "O", "░"],
-	["░", "^", "░"],
+const boardArray = new Field([
+  ["*", "░", "░"],
+  ["O", "░", "░"],
+  ["░", "O", "^"],
 ]);
-newGame.print();
+boardArray.print();
+
+while (true) {
+  const command = prompt(
+    "Type R /L /U /D to move. Type Q to quit. Enter your command: ");
+  	console.log(`Command:"${command}"`);
+	handleCommand(command);
+	if (command === "q") {
+    break;
+  }
+}
+
+function handleCommand(command) {
+  if (command === "R") {
+    console.log("Your character goes right");
+  } else if (command === "L") {
+    console.log("Your character goes left");
+  } else if (command === "U") {
+    console.log("Your character goes up");
+  } else if (command === "D") {
+    console.log("Your character goes down");
+  } else if (command === "Q") {
+    console.log("quit");
+  } else {
+    console.log("Unknown command.Please try again.");
+  }
+}
