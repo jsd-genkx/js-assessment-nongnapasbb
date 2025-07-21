@@ -19,7 +19,6 @@ const resultOutsideBoard = "outside board";
 function randomNumber(number) {
   return Math.floor(Math.random() * number);
 }
-
 class Field {
   constructor(board = [[]]) {
     this.newBoard = board;
@@ -71,17 +70,10 @@ class Field {
     } else if (this.newBoard[nextPosition.y][nextPosition.x] === hole) {
       return resultFoundHole;
     } else if (
-      nextPosition.y === 0 || //check top row border
-      nextPosition.y === boardHeight - 1 || //check bottom row border
-      nextPosition.x === 0 || //check left column border
-      nextPosition.x === boardWidth - 1 // check right column border
-    ) {
-      return resultFoundBorder;
-    } else if (
-      nextPosition.y < boardHeight && // Check below if still inside the box
-      nextPosition.y >= 0 && // Check above if still inside the box
-      nextPosition.x < boardWidth && // Check right if still inside the box
-      nextPosition.x >= 0 // Check left if still inside the box
+      nextPosition.y < boardHeight && // Check below
+      nextPosition.y >= 0 && // Check above
+      nextPosition.x < boardWidth && // Check right
+      nextPosition.x >= 0 // Check left
     ) {
       return resultInsideBoard;
     } else {
@@ -163,26 +155,22 @@ while (true) {
   );
   console.log(`COMMAND: ${moveCommand}`);
   const result = handleCommand(moveCommand);
-  console.log(result)
   if (result === resultOutsideBoard) {
-    console.log("You are outside of the board. You lose!");
+    console.log("You are outside of the board. You lose - Game Over!");
     break;
   } else if (result === resultFoundHole) {
-    console.log("You fell into a hole. You lose!");
+    console.log("You fell into a hole. You lose - Game Over!");
     break;
   } else if (result === resultFoundHat) {
-    console.log("You found the hat. Congrats! You win!");
+    console.log("You found the hat. Congrats! You win - End Game!");
     break;
-  } else if (result === resultFoundBorder) {
-    console.log("You are walking on the edge of the board! Be careful!");
   } else if (moveCommand !== "Q") {
-    console.log("You are still inside the board! Keep playing!");
+    console.log("You are still inside the board. Keep playing!");
   }
   if (moveCommand === "Q") {
     break;
   }
 }
-
 function handleCommand(moveCommand) {
   if (moveCommand === "R") {
     const result = boardArray.moveRight();
