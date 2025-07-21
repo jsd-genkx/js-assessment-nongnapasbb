@@ -12,6 +12,7 @@ const pathCharacter = "*";
 const resultFoundHat = "found hat";
 const resultFoundHole = "found hole";
 const resultFoundField = "found field";
+const resultFoundBorder = "found border";
 const resultInsideBoard = "inside board";
 const resultOutsideBoard = "outside board";
 
@@ -70,10 +71,17 @@ class Field {
     } else if (this.newBoard[nextPosition.y][nextPosition.x] === hole) {
       return resultFoundHole;
     } else if (
-      nextPosition.y < boardHeight && // Check below
-      nextPosition.y >= 0 && // Check above
-      nextPosition.x < boardWidth && // Check right
-      nextPosition.x >= 0 // Check left
+      nextPosition.y === 0 || //check top row border
+      nextPosition.y === boardHeight - 1 || //check bottom row border
+      nextPosition.x === 0 || //check left column border
+      nextPosition.x === boardWidth - 1 // check right column border
+    ) {
+      return resultFoundBorder;
+    } else if (
+      nextPosition.y < boardHeight && // Check below if still inside the box
+      nextPosition.y >= 0 && // Check above if still inside the box
+      nextPosition.x < boardWidth && // Check right if still inside the box
+      nextPosition.x >= 0 // Check left if still inside the box
     ) {
       return resultInsideBoard;
     } else {
@@ -92,7 +100,7 @@ class Field {
   }
 
   moveRight() {
-    console.log("Character moves right");
+    console.log("Your character moves right!");
     const nextPosition = {
       x: this.currentPosition.x + 1,
       y: this.currentPosition.y,
@@ -101,7 +109,7 @@ class Field {
     return result;
   }
   moveLeft() {
-    console.log("Character moves left");
+    console.log("Your character moves left!");
     const nextPosition = {
       x: this.currentPosition.x - 1,
       y: this.currentPosition.y,
@@ -110,7 +118,7 @@ class Field {
     return result;
   }
   moveUp() {
-    console.log("Character moves up");
+    console.log("Your character goes up!");
     const nextPosition = {
       x: this.currentPosition.x,
       y: this.currentPosition.y - 1,
@@ -119,7 +127,7 @@ class Field {
     return result;
   }
   moveDown() {
-    console.log("Character moves down");
+    console.log("Your character goes down!");
     const nextPosition = {
       x: this.currentPosition.x,
       y: this.currentPosition.y + 1,
@@ -130,7 +138,6 @@ class Field {
   setCurrentPosition() {
     for (let i = 0; i < this.newBoard.length; i++) {
       for (let j = 0; j < this.newBoard[i].length; j++) {
-        // console.log(`i = ${i} j = ${j} Value = ${this.newBoard[i][j]}`);
         if (this.newBoard[i][j] === "*") {
           this.currentPosition.x = j;
           this.currentPosition.y = i;
@@ -151,10 +158,12 @@ const boardArray = new Field([
 
 while (true) {
   boardArray.print();
-  // console.log(`CURRENT POSITION: ${boardArray.getCurrentPosition()}`);
-  const moveCommand = prompt("Type R / L / U / D to move. Type Q to quit. Enter your command: ");
+  const moveCommand = prompt(
+    "Type R / L / U / D to move. Type Q to quit. Enter your command: "
+  );
   console.log(`COMMAND: ${moveCommand}`);
   const result = handleCommand(moveCommand);
+  console.log(result)
   if (result === resultOutsideBoard) {
     console.log("You are outside of the board. You lose!");
     break;
@@ -164,8 +173,10 @@ while (true) {
   } else if (result === resultFoundHat) {
     console.log("You found the hat. Congrats! You win!");
     break;
-  } else {
-    console.log("You are still inside the board. Keep playing!");
+  } else if (result === resultFoundBorder) {
+    console.log("You are walking on the edge of the board! Be careful!");
+  } else if (moveCommand !== "Q") {
+    console.log("You are still inside the board! Keep playing!");
   }
   if (moveCommand === "Q") {
     break;
@@ -186,8 +197,8 @@ function handleCommand(moveCommand) {
     const result = boardArray.moveDown();
     return result;
   } else if (moveCommand === "Q") {
-    console.log("You quit the game! See you next time!");
+    console.log("You quit the game. See you next time!");
   } else {
-    console.log("Enter a valid command! Try again!");
+    console.log("Enter a valid command. Try again!");
   }
 }
